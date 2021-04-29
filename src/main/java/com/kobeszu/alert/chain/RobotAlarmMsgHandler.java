@@ -57,11 +57,7 @@ public class RobotAlarmMsgHandler extends AbstractAlarmMsgHandler implements App
                 .append(getApplicationName()).append("]").append("[").append(ip).append("]");
         Map<String, String> mdcMap = event.getMDCPropertyMap();
         if (mdcMap != null) {
-            mdcMap.forEach((k, v) -> {
-                if("sid".equals(k)) {
-                    logBuilder.append("[").append(v).append("]");
-                }
-            });
+            logBuilder.append("[").append(mdcMap.getOrDefault("sid", "")).append("]");
         }
 
         IThrowableProxy throwableProxy = event.getThrowableProxy();

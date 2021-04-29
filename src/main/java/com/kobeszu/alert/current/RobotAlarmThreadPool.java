@@ -26,7 +26,7 @@ public class RobotAlarmThreadPool {
 
     private RobotAlarmThreadPool() {
         pool = new ThreadPoolExecutor( CPU_SIZE * 4,  CPU_SIZE * 4, 0, TimeUnit.SECONDS,
-                new LinkedBlockingQueue(Integer.MAX_VALUE / 10), new NamedThreadFactory(POOL_NAME), new MyAbortPolicy(POOL_NAME));
+                new LinkedBlockingQueue(40000), new NamedThreadFactory(POOL_NAME), new MyAbortPolicy(POOL_NAME));
     }
 
     /**

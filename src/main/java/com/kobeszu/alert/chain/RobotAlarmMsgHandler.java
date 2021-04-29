@@ -55,18 +55,18 @@ public class RobotAlarmMsgHandler extends AbstractAlarmMsgHandler implements App
         StringBuilder logBuilder = new StringBuilder();
         logBuilder.append(LocalDateTime.now().format(dateTimeFormatter)).append(" [")
                 .append(getApplicationName()).append("]").append("[").append(ip).append("]");
-        Map<String, String> mdcMap = MDC.getCopyOfContextMap();
+        Map<String, String> mdcMap = event.getMDCPropertyMap();
         if (mdcMap != null) {
             mdcMap.forEach((k, v) -> {
-                //根据需要，过滤一些信息
-                if(!"local_ip".equals(k) && !"remote_ip".equals(k)) {
-                    logBuilder.append("[").append(k).append(":").append(v).append("]");
+                if("sid".equals(k)) {
+                    logBuilder.append("[").append(v).append("]");
                 }
             });
         }
 
         IThrowableProxy throwableProxy = event.getThrowableProxy();
         if (throwableProxy != null) {
+            //has throwable
             IThrowableProxy cause = throwableProxy.getCause();
             if (cause != null) {
                 StackTraceElementProxy[] stackTraceElement = cause.getStackTraceElementProxyArray();
@@ -78,9 +78,12 @@ public class RobotAlarmMsgHandler extends AbstractAlarmMsgHandler implements App
 
             }
             String codeLocation = throwableProxy.getStackTraceElementProxyArray()[0].getSTEAsString();
-            logBuilder.append(throwableProxy.getClassName()).append(codeLocation).append(",");
+            logBuilder.append(throwableProxy.getClassName()).append("\n").append(codeLocation).append(",");
         } else {
-            logBuilder.append(event.getLoggerName()).append(" ");
+            //log.error
+            if(event.getCallerData() != null && event.getCallerData().length > 0) {
+                logBuilder.append(event.getCallerData()[0].toString()).append(" ");
+            }
         }
         logBuilder.append(event.getFormattedMessage());
 

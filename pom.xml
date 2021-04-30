@@ -7,6 +7,17 @@
     <groupId>io.github.kobeszu</groupId>
     <artifactId>dragon-alert-spring-boot-starter</artifactId>
     <version>1.0.0</version>
+    <name>dragon-alert-spring-boot-starter</name>
+    <description>base spring-boot develop alert starter</description>
+    <url>https://github.com/kobeszu/dragon-alert-spring-boot-starter</url>
+         
+    <licenses>
+       <license>
+           <name>MIT License</name>
+           <url>https://opensource.org/licenses/MIT</url>
+           <distribution>repo</distribution>
+       </license>
+    </licenses>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -67,7 +78,34 @@
                     </archive>
                 </configuration>
             </plugin>
+                 
+            <!-- Gpg Signature -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                   <execution>
+                       <id>sign-artifacts</id>
+                       <phase>verify</phase>
+                       <goals>
+                          <goal>sign</goal>
+                       </goals>
+                   </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+         
+    <distributionManagement>
+       <snapshotRepository>
+	   <id>sonatype</id>
+	   <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+       </snapshotRepository>
+       <repository>
+	   <id>sonatype</id>
+	   <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+       </repository>
+    </distributionManagement>
 
 </project>
